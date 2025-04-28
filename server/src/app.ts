@@ -1,9 +1,16 @@
 import express from 'express';
 import todoRoutes from './routes/todoRoutes';
 import { errorHandler } from './middlewares/errorHandler';
+import cors from 'cors';
 
 const app = express();
-
+// Connecting with Frontend
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+app.use(cors(corsOptions));
 // Routes
 app.get('/', (req, res) => {
   res.send('Hello World');

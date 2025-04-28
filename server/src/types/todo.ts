@@ -5,8 +5,5 @@ export interface ITodo {
   completed: boolean;
 }
 
-export interface TodoState {
-  todos: ITodo[];
-  loading: boolean;
-  error: string | null;
-}
+export let todos: ITodo[] = [];
+export type UpdateTodoData = Partial<Omit<ITodo, 'id'>>;

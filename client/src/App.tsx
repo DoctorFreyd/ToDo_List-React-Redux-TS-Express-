@@ -1,8 +1,8 @@
 import React from "react";
 // import { useState } from "react";
 // import { useSelector, useDispatch } from "react-redux";
-import TodoForm from "./components/Todo_form";
-import TodoItem from "./components/Todo_item";
+import TodoForm from "./components/TodoForm";
+import TodoItem from "./components/TodoItem";
 
 const App: React.FC = () => {
   return (
