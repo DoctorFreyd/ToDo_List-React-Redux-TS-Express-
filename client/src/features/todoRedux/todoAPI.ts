@@ -1,6 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { Todo } from "../../types/todo";
+import { ITodo } from "../../types/todo";
+const todoURL: string = import.meta.env.VITE_TODO_BACKEND_URL;
+
+// Get The All Todos
+export const getTodos = createAsyncThunk("todos/getTodo", async () => {
+  const { data } = await axios.get(`${todoURL}`);
+  console.log("todoApi: ", data);
+  return data as ITodo[];
+});
 
 // // Get The List
 // export const getTodos = createAsyncThunk("todos/getAll", async () => {

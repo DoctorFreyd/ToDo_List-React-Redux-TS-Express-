@@ -1,6 +1,6 @@
 import React from "react";
-// import { useState } from "react";
-// import { useSelector, useDispatch } from "react-redux";
+import "./App.css";
+
 import TodoForm from "./components/TodoForm";
 import TodoItem from "./components/TodoItem";
 

@@ -1,38 +1,36 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TodoState } from "../../types/todo";
-import { v4 as uuidv } from "uuid";
+import { getTodos } from "./todoAPI";
 // import { getTodos, addTodo, updateTodo, deleteTodo } from "./todoAPI";
 
 interface DataType {
-  todos: TodoState["todos"];
+  todo: TodoState["todos"];
   loading: boolean;
   error: string | null;
-  // counter: number;
 }
 
 const initialState: DataType = {
-  todos: [],
+  todo: [],
   loading: false,
   error: null,
-  // counter: 0,
 };
-
 const todoSlice = createSlice({
   name: "todos",
   initialState,
-  reducers: {
-    // incriment: (state) => {
-    //   state.counter++;
-    // },
-    // decrement: (state) => {
-    //   state.counter--;
-    // },
-    // clear: (state) => {
-    //   state.counter = 0;
-    // },
-  },
+  reducers: {},
   extraReducers: (builder) => {
-    // // Getting All Todo-List
+    // Getting All Todo-List
+    builder.addCase(getTodos.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getTodos.fulfilled, (state, action) => {
+      state.loading = false;
+      state.todo = action.payload;
+    });
+    builder.addCase(getTodos.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message ?? "Failed to load todos";
+    });
     // builder
     //   .addCase(getTodos.pending, (state) => {
     //     state.loading = true;
@@ -63,5 +61,4 @@ const todoSlice = createSlice({
   },
 });
 
-// export const { incriment, decrement, clear } = todoSlice.actions;
 export default todoSlice.reducer;

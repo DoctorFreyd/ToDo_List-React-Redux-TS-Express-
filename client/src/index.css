@@ -8,20 +8,3 @@
     height: auto;
   }
 }
-/* .form-control:focus {
-  border-color: rgba(126, 239, 104, 0.8);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset,
-    0 0 8px rgba(126, 239, 104, 0.6);
-}
-.form-control:focus {
-  border-color: rgba(220, 53, 69, 0.8);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset,
-    0 0 8px rgba(220, 53, 69, 0.6);
-}
-.form-control:focus {
-  border-color: rgba(0, 123, 255, 0.8);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset,
-    0 0 8px rgba(0, 123, 255, 0.6);
-} */
-
-/* https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.css */
