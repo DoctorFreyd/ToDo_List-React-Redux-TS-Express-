@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ITodo } from "../types/todo";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
+import { useAppDispatch } from "../app/hooks";
+import { createTodo } from "../features/todoRedux/todoAPI";
 //
 const TodoForm: React.FC = () => {
   // Varibales
@@ -23,6 +25,7 @@ const TodoForm: React.FC = () => {
     title: false,
     text: false,
   });
+  const dispatch = useAppDispatch();
   // Functions
   const handleClear = () => {
     reset();
@@ -55,13 +58,23 @@ const TodoForm: React.FC = () => {
       };
     }
   };
-  const handleClickForm = (obj: ITodo) => {
-    let data = obj;
-    console.log(data);
+  const handleClickForm = async (obj: ITodo) => {
+    let title = obj.title;
+    let text = obj.text;
+    try {
+      const createList = await dispatch(createTodo({ title, text }));
+      if (createTodo.fulfilled.match(createList)) {
+        toast.success("Successfully Completed");
+      } else {
+        console.log("Error in The Proccess", createList.payload);
+        toast.error("Error in Proccess");
+      }
+    } catch (err) {
+      console.log("server error: ", err);
+      toast.error("Problem With Server");
+    }
     reset();
-    toast.success("Successfully Completed");
   };
-  // useEffect(() => {});
   // Screen
   return (
     <div className="w-100 d-flex justify-content-center bg-secondary p-4">
@@ -165,7 +178,6 @@ const TodoForm: React.FC = () => {
             ></button>
           </div>
         </div>
-        <Toaster position="top-right" reverseOrder={false} />
       </form>
     </div>
   );

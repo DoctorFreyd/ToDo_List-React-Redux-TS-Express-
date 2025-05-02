@@ -1,30 +1,54 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { ITodo } from "../../types/todo";
+import { ITodo, CreateTodoData, UpdateTodoData } from "../../types/todo";
 const todoURL: string = import.meta.env.VITE_TODO_BACKEND_URL;
 
 // Get The All Todos
-export const getTodos = createAsyncThunk("todos/getTodo", async () => {
+export const getTodos = createAsyncThunk("todos/get", async () => {
   const { data } = await axios.get(`${todoURL}`);
-  console.log("todoApi: ", data);
   return data as ITodo[];
 });
-
-// // Get The List
-// export const getTodos = createAsyncThunk("todos/getAll", async () => {
-//   const { data } = await axios.get("https://dummyjson.com/todos");
-//   return data.todos as Todo[];
-// });
-
-// // Add The List
-// export const addTodo = createAsyncThunk("todos/add", async (text: string) => {
-//   const { data } = await axios.post("https://dummyjson.com/todos/add", {
-//     todo: text,
-//     completed: false,
-//     userId: 1,
-//   });
-//   return data as Todo;
-// });
+// Create The List
+export const createTodo = createAsyncThunk(
+  "todos/create",
+  async ({ title, text }: CreateTodoData) => {
+    const response = await axios.post(`${todoURL}`, {
+      title: title,
+      text: text,
+    });
+    return response.data as ITodo;
+  }
+);
+// Update The List
+export const updateTodo = createAsyncThunk(
+  "todos/update",
+  async ({
+    id,
+    title,
+    text,
+    completed,
+  }: {
+    id: string;
+    title: string | undefined;
+    text: string | undefined;
+    completed: boolean | undefined;
+  }) => {
+    const sendData: UpdateTodoData = {};
+    if (title !== undefined) sendData.title = title;
+    if (text !== undefined) sendData.text = text;
+    if (completed !== undefined) sendData.completed = completed;
+    const { data } = await axios.put(`${todoURL + id}`, sendData);
+    return data as ITodo;
+  }
+);
+// Delete The List
+export const deleteTodo = createAsyncThunk(
+  "todos/delete",
+  async (id: string) => {
+    const { data } = await axios.delete(`${todoURL + id}`);
+    return data;
+  }
+);
 
 // // Update The List
 // export const updateTodo = createAsyncThunk(

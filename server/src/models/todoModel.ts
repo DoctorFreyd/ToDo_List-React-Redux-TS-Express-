@@ -34,7 +34,7 @@ Todo.init(
     sequelize,
     modelName: 'Todo',
     tableName: 'todos',
-    timestamps: false,
+    timestamps: true,
   },
 );
 

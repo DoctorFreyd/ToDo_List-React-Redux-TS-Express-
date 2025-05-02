@@ -40,7 +40,8 @@ export const updateTodo = async (
   next: NextFunction,
 ) => {
   try {
-    const { id, ...data } = req.body;
+    const { id } = req.params;
+    const { ...data } = req.body;
     const updated = await updateTheList(id, data);
     res.status(200).json(updated);
   } catch (error) {

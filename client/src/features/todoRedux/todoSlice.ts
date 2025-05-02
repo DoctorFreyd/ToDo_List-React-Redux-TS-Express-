@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TodoState } from "../../types/todo";
-import { getTodos } from "./todoAPI";
-// import { getTodos, addTodo, updateTodo, deleteTodo } from "./todoAPI";
+import { createTodo, deleteTodo, getTodos, updateTodo } from "./todoAPI";
 
 interface DataType {
   todo: TodoState["todos"];
@@ -20,44 +19,30 @@ const todoSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     // Getting All Todo-List
-    builder.addCase(getTodos.pending, (state) => {
-      state.loading = true;
+    builder
+      .addCase(getTodos.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getTodos.fulfilled, (state, action) => {
+        state.loading = false;
+        state.todo = action.payload;
+      })
+      .addCase(getTodos.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? "Failed to load todos";
+      });
+    builder.addCase(createTodo.fulfilled, (state, action) => {
+      state.todo.push(action.payload);
     });
-    builder.addCase(getTodos.fulfilled, (state, action) => {
-      state.loading = false;
-      state.todo = action.payload;
+    builder.addCase(deleteTodo.fulfilled, (state, action) => {
+      state.todo = state.todo.filter((t) => t.id !== action.payload);
     });
-    builder.addCase(getTodos.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.error.message ?? "Failed to load todos";
+    builder.addCase(updateTodo.fulfilled, (state, action) => {
+      const index = state.todo.findIndex((t) => t.id === action.payload.id);
+      if (index !== -1) {
+        state.todo[index] = action.payload;
+      }
     });
-    // builder
-    //   .addCase(getTodos.pending, (state) => {
-    //     state.loading = true;
-    //   })
-    //   .addCase(getTodos.fulfilled, (state, action) => {
-    //     state.loading = false;
-    //     state.todos = action.payload;
-    //   })
-    //   .addCase(getTodos.rejected, (state, action) => {
-    //     state.loading = false;
-    //     state.error = action.error.message ?? "Failed to load todos";
-    //   });
-    // // Adding a new List
-    // builder.addCase(addTodo.fulfilled, (state, action) => {
-    //   state.todos.push(action.payload);
-    // });
-    // // Updating the list
-    // builder.addCase(updateTodo.fulfilled, (state, action) => {
-    //   const index = state.todos.findIndex((t) => t.id === action.payload.id);
-    //   if (index !== -1) {
-    //     state.todos[index] = action.payload;
-    //   }
-    // });
-    // // Deleting the list
-    // builder.addCase(deleteTodo.fulfilled, (state, action) => {
-    //   state.todos = state.todos.filter((t) => t.id !== action.payload);
-    // });
   },
 });
 
